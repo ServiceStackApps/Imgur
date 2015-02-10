@@ -68,7 +68,7 @@ namespace Imgur
 
         private void WriteImage(Stream ms)
         {
-            var hash = GetMd5Hash(ms);
+            var hash = GetMd5Hash(ms.ReadFully());
 
             ms.Position = 0;
             var fileName = hash + ".png";
@@ -108,9 +108,9 @@ namespace Imgur
             }
         }
 
-        public static string GetMd5Hash(Stream stream)
+        public static string GetMd5Hash(byte[] bytes)
         {
-            var hash = MD5.Create().ComputeHash(stream);
+            var hash = MD5.Create().ComputeHash(bytes);
             var sb = new StringBuilder();
             for (var i = 0; i < hash.Length; i++)
             {
