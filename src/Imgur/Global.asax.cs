@@ -68,6 +68,7 @@ namespace Imgur
 
         private void WriteImage(Stream ms)
         {
+            ms.Position = 0;
             var hash = GetMd5Hash(ms.ReadFully());
 
             ms.Position = 0;
