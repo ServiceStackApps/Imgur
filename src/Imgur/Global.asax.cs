@@ -32,6 +32,12 @@ namespace Imgur
     [Route("/reset")]
     public class Reset { }
 
+    [Route("/delete/{Id}")]
+    public class DeleteUpload
+    {
+        public string Id { get; set; }
+    }
+
     public class ImageService : Service
     {
         const int ThumbnailSize = 100;
@@ -173,6 +179,16 @@ namespace Imgur
                     return outimage;
                 }
             }
+        }
+
+        public object Any(DeleteUpload request)
+        {
+            var file = request.Id + ".png";
+            var filesToDelete = new[] { UploadsDir.CombineWith(file), ThumbnailsDir.CombineWith(file) }.ToList();
+            ImageSizes.Each(x => filesToDelete.Add(UploadsDir.CombineWith(x, file)));
+            filesToDelete.Each(File.Delete);
+
+            return HttpResult.Redirect("/");
         }
 
         public object Any(Reset request)
