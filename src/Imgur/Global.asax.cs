@@ -221,6 +221,7 @@ namespace Imgur
     {
         protected void Application_Start(object sender, EventArgs e)
         {
+            ClientConfig.ConfigureTls12();
             new AppHost().Init();
         }
     }
